@@ -34,5 +34,18 @@ export default defineConfig({
         setupFiles: ['.storybook/vitest.setup.ts']
       }
     }]
-  }
+  },
+  build: {
+    outDir: "dist",
+    rollupOptions: {
+      input: {
+        popup: "index.html",
+        background: "src/background.ts",
+        content: "src/content/content.ts"
+      },
+      output: {
+        entryFileNames: `[name].js`,
+      },
+    }
+  },
 });
