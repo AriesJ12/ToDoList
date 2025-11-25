@@ -2,13 +2,15 @@ import "./App.css";
 
 import {
   DndContext,
+  DragOverlay,
   type DragEndEvent,
+  type DragStartEvent,
   type UniqueIdentifier,
 } from "@dnd-kit/core";
 import ItemsCategories from "./components/ItemsCategories";
 import Items from "./components/Items";
 import { useState } from "react";
-import { Status, type Task } from "./types";
+import {type Task, Status } from "./types";
 
 function App() {
   const [items, setItems] = useState<Task[]>([]);
@@ -17,22 +19,15 @@ function App() {
     Record<string, UniqueIdentifier | null>
   >({});
 
+  const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
+
   return (
-    <DndContext onDragEnd={handleDragEnd}>
+    <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
       <form onSubmit={addTodo}>
         <input name="title" placeholder="Task title" />
         <textarea name="description" placeholder="Description"></textarea>
         <button type="submit">Add</button>
       </form>
-      <div style={{ padding: "20px" }}>
-        {items
-          .filter((item) => itemLocations[item.id] === null)
-          .map((item) => (
-            <Items key={item.id} id={item.id}>
-              {item.title}
-            </Items>
-          ))}
-      </div>
       <main>
         {Status.map((statusId) => (
           <ItemsCategories key={statusId} id={statusId}>
@@ -46,17 +41,39 @@ function App() {
           </ItemsCategories>
         ))}
       </main>
+      <DragOverlay>
+        <div>
+          {activeId ? (
+            "abc"
+          ): null}
+        </div>
+      </DragOverlay>
     </DndContext>
   );
+
+  function handleDragStart(event: DragStartEvent) {
+    setActiveId(event.active.id);
+  }
 
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
     if (!over) return;
 
+    const newStatus = over.id as Status;
+
+    // Update visual locations
     setItemLocations((prev) => ({
       ...prev,
-      [active.id]: over.id,
+      [active.id]: newStatus,
     }));
+
+    // Update actual task status
+    setItems((prev) =>
+      prev.map((task) =>
+        task.id === active.id ? { ...task, status: newStatus } : task
+      )
+    );
+    setActiveId(null);
   }
 
   function addTodo(event: React.FormEvent<HTMLFormElement>) {

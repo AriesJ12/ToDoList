@@ -1,10 +1,11 @@
 const Status = ["To Do", "In Progress", "Done"] as const;
+export type Status = (typeof Status)[number];
 
 interface Task {
     id: string;
     title: string;
     description: string;
-    status: (typeof Status)[number]; 
+    status: Status; 
 }
 
 interface Column {
