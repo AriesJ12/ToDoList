@@ -1,14 +1,10 @@
-const Status = {
-    todo: 1,
-    in_progress: 2,
-    done: 3
-} as const;
+const Status = ["To Do", "In Progress", "Done"] as const;
 
 interface Task {
-    id: number;
+    id: string;
     title: string;
     description: string;
-    status: typeof Status[keyof typeof Status]; 
+    status: (typeof Status)[number]; 
 }
 
 interface Column {

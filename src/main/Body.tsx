@@ -1,34 +1,95 @@
-import '../App.css'
+import "./Body.css";
 
-import {DndContext, type DragEndEvent, type UniqueIdentifier} from '@dnd-kit/core';
-import ItemsCategories from '../components/ItemsCategories';
-import Items from '../components/Items';
-import { useState } from 'react';
+import {
+  DndContext,
+  type DragEndEvent,
+  type UniqueIdentifier,
+} from "@dnd-kit/core";
+import ItemsCategories from "../components/ItemsCategories";
+import Items from "../components/Items";
+import { useState } from "react";
+import { Status, type Task } from "../types";
 
 function Body() {
-  const containers = ['To Do', 'In Progress', 'Done'];
-  const [parent, setParent] = useState<UniqueIdentifier | null>(null);
-  const draggableMarkup = (
-    <Items id="draggable">Drag me</Items>
-  );
+  const [items, setItems] = useState<Task[]>([]);
+
+  const [itemLocations, setItemLocations] = useState<
+    Record<string, UniqueIdentifier | null>
+  >({});
 
   return (
     <DndContext onDragEnd={handleDragEnd}>
-      {parent === null ? draggableMarkup : null}
+      <form onSubmit={addTodo}>
+        <input name="title" placeholder="Task title" />
+        <textarea name="description" placeholder="Description"></textarea>
+        <button type="submit">Add</button>
+      </form>
+      <div style={{ padding: "20px" }}>
+        {items
+          .filter((item) => itemLocations[item.id] === null)
+          .map((item) => (
+            <Items key={item.id} id={item.id}>
+              {item.title}
+            </Items>
+          ))}
+      </div>
+      <main>
+        {Status.map((statusId) => (
+          <ItemsCategories key={statusId} id={statusId}>
+            <h3>{statusId}</h3>
 
-      {containers.map((id) => (
-        <ItemsCategories key={id} id={id}>
-          {parent === id ? draggableMarkup : 'Drop here'}
-          {id}
-        </ItemsCategories>
-      ))}
+            {items
+              .filter((item) => itemLocations[item.id] === statusId)
+              .map((item) => (
+                <Items key={item.id} id={item.id}>
+                  {item.title}
+                </Items>
+              ))}
+          </ItemsCategories>
+        ))}
+      </main>
     </DndContext>
   );
 
   function handleDragEnd(event: DragEndEvent) {
-    const {over} = event;
-    setParent(over ? over.id : null);
+    const { active, over } = event;
+    if (!over) return;
+
+    setItemLocations((prev) => ({
+      ...prev,
+      [active.id]: over.id,
+    }));
+  }
+
+  function addTodo(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+
+    const title = formData.get("title")?.toString().trim() || "";
+    const description = formData.get("description")?.toString().trim() || "";
+
+    if (!title) return; // basic guard
+
+    const newTask: Task = {
+      id: String(Date.now()), // simple unique ID
+      title,
+      description,
+      status: Status[0],
+    };
+
+    // Add task to items list
+    setItems((prev) => [...prev, newTask]);
+
+    // Register the task in DnD locations (initially not placed)
+    setItemLocations((prev) => ({
+      ...prev,
+      [newTask.id]: newTask.status,
+    }));
+
+    form.reset();
   }
 }
 
-export default Body
+export default Body;
