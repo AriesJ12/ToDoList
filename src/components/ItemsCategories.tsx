@@ -1,9 +1,22 @@
-import React from 'react'
+import { type ReactNode } from 'react'
+import {useDroppable} from '@dnd-kit/core';
 
-function ItemsCategories() {
+interface ItemsCategoriesProps{
+  children?: ReactNode;
+}
+
+function ItemsCategories(props: ItemsCategoriesProps) {
+  const {isOver, setNodeRef} = useDroppable({
+    id: 'droppable',
+  });
+  const style = {
+    color: isOver ? 'green' : undefined,
+  };
   return (
-    <div>ItemsCategories</div>
-  )
+    <div ref={setNodeRef} style={style}>
+      {props.children}
+    </div>
+  );
 }
 
 export default ItemsCategories
