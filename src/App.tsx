@@ -1,34 +1,24 @@
-import './App.css'
-
-import {DndContext, type DragEndEvent, type UniqueIdentifier} from '@dnd-kit/core';
-import ItemsCategories from './components/ItemsCategories';
-import Items from './components/Items';
-import { useState } from 'react';
+import "./App.css";
 
 function App() {
-  const containers = ['A', 'B', 'C'];
-  const [parent, setParent] = useState<UniqueIdentifier | null>(null);
-  const draggableMarkup = (
-    <Items id="draggable">Drag me</Items>
-  );
-
   return (
-    <DndContext onDragEnd={handleDragEnd}>
-      {parent === null ? draggableMarkup : null}
-
-      {containers.map((id) => (
-        <ItemsCategories key={id} id={id}>
-          {parent === id ? draggableMarkup : 'Drop here'}
-          {id}
-        </ItemsCategories>
-      ))}
-    </DndContext>
+    <>
+      <div style={{ padding: 12, width: 240 }}>
+        <h3>Open a page</h3>
+        <button
+          onClick={openExtensionPage}
+          style={{ display: "block", marginBottom: 8 }}
+        >
+          Open extension page
+        </button>
+      </div>
+    </>
   );
 
-  function handleDragEnd(event: DragEndEvent) {
-    const {over} = event;
-    setParent(over ? over.id : null);
+  function openExtensionPage() {
+    const url = chrome.runtime.getURL("src/main/index.html");
+    chrome.tabs.create({ url });
   }
 }
 
-export default App
+export default App;
