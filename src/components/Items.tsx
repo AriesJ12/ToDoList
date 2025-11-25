@@ -18,7 +18,9 @@ function Items(props: ItemsProps) {
 
   return (
     <div ref={setNodeRef} style={style} {...listeners} {...attributes}>
-      {props.children}
+      <div className="task">
+        {props.children}
+      </div>
     </div>
   )
 }
