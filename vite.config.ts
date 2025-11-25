@@ -40,6 +40,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         popup: "index.html",
+        main: "src/main/index.html",
         background: "src/background.ts",
         content: "src/content/content.ts"
       },
