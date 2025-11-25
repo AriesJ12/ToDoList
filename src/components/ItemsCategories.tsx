@@ -12,14 +12,14 @@ function ItemsCategories(props: ItemsCategoriesProps) {
   });
   const style = {
     color: isOver ? 'green' : undefined,
-    display: "flex",
-    flexDirection: "column" as "column",
-    justifyContent: "center",
-    alignItems: "center",
+
   };
   return (
-    <div ref={setNodeRef} style={style} >
-      {props.children}
+    <div className='category' ref={setNodeRef} >
+      <h3>{props.id}</h3>
+      <div className="draggableContainer" style={style} >
+        {props.children}
+      </div>
     </div>
   );
 }
