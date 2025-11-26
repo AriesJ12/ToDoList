@@ -24,8 +24,7 @@ function App() {
   return (
     <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
       <form onSubmit={addTodo}>
-        <input name="title" placeholder="Task title" />
-        <textarea name="description" placeholder="Description"></textarea>
+        <input name="details" placeholder="Details" />
         <button type="submit">Add</button>
       </form>
       <main>
@@ -35,7 +34,7 @@ function App() {
               .filter((item) => itemLocations[item.id] === statusId)
               .map((item) => (
                 <Items key={item.id} id={item.id}>
-                  {item.title}
+                  {item.details}
                 </Items>
               ))}
           </ItemsCategories>
@@ -82,15 +81,13 @@ function App() {
     const form = event.currentTarget;
     const formData = new FormData(form);
 
-    const title = formData.get("title")?.toString().trim() || "";
-    const description = formData.get("description")?.toString().trim() || "";
+    const details = formData.get("details")?.toString().trim() || "";
 
-    if (!title) return; // basic guard
+    if (!details) return; // basic guard
 
     const newTask: Task = {
       id: String(Date.now()), // simple unique ID
-      title,
-      description,
+      details: details,
       status: Status[0],
     };
 

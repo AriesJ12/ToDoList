@@ -3,8 +3,7 @@ export type Status = (typeof Status)[number];
 
 interface Task {
     id: string;
-    title: string;
-    description: string;
+    details: string;
     status: Status; 
 }
 
