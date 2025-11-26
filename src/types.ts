@@ -7,13 +7,6 @@ interface Task {
     status: Status; 
 }
 
-interface Column {
-    id: number,
-    title: string,
-    description: string,
-    tasks: Task[]
-}
-
 export { Status };
-export type { Task, Column };
+export type { Task };
  
