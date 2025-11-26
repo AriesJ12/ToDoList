@@ -1,4 +1,4 @@
-import { Status, type Task } from "../types";
+import { type Task } from "../types";
 
 import { create } from "zustand";
 

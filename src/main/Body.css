@@ -1,14 +1,58 @@
-*{
-    box-sizing: border-box;
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+:root {
+  --primary-color: #ccd5ae;
+  --secondary-color: #e9edc9;
+  --third-color: #fefae0;
+  --fourth-color: #faedcd;
+  --fifth-color: #d4a373;
 }
 
-body{
-    height: 100vh;
+* {
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  background-color: var(--third-color);
+  font-family: "Inter", sans-serif;
+}
+
+#root {
+  height: 100%;
 }
 
 main {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    column-gap: 10px;
-    height: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 10px;
+  height: 100%;
+}
+
+.category {
+  border-radius: 5px;
+  /* border: 1px #d4a373 solid; */
+  background-color: var(--fourth-color);
+  h3 {
+    text-align: center;
+    margin: 0;
+    color: black;
+    font-weight: 600;
+  }
+  .draggableContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+
+    > div {
+      flex: 0 0 100%;
+    }
+
+    .task {
+      background-color: var(--third-color);
+      width: 100%;
+    }
+  }
 }

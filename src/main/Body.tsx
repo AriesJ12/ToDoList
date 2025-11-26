@@ -2,63 +2,77 @@ import "./Body.css";
 
 import {
   DndContext,
+  DragOverlay,
   type DragEndEvent,
+  type DragStartEvent,
   type UniqueIdentifier,
 } from "@dnd-kit/core";
+
 import ItemsCategories from "../components/ItemsCategories";
 import Items from "../components/Items";
-import { useState } from "react";
-import { Status, type Task } from "../types";
+import { useState, useEffect } from "react";
+import { type Task, Status } from "../types";
+import { useTaskStore } from "../hooks/task";
 
 function Body() {
-  const [items, setItems] = useState<Task[]>([]);
+  const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
 
-  const [itemLocations, setItemLocations] = useState<
-    Record<string, UniqueIdentifier | null>
-  >({});
+  // Zustand store
+  const tasks = useTaskStore((s) => s.tasks);
+  const addTask = useTaskStore((s) => s.add);
+  const updateTask = useTaskStore((s) => s.update);
+  const loadTask = useTaskStore((s) => s.load);
+
+  // Load tasks on initial mount
+  useEffect(() => {
+    loadTask();
+  }, [loadTask]);
 
   return (
-    <DndContext onDragEnd={handleDragEnd}>
+    <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
       <form onSubmit={addTodo}>
-        <input name="title" placeholder="Task title" />
-        <textarea name="description" placeholder="Description"></textarea>
+        <input name="details" placeholder="Details" />
         <button type="submit">Add</button>
       </form>
-      <div style={{ padding: "20px" }}>
-        {items
-          .filter((item) => itemLocations[item.id] === null)
-          .map((item) => (
-            <Items key={item.id} id={item.id}>
-              {item.title}
-            </Items>
-          ))}
-      </div>
+
       <main>
         {Status.map((statusId) => (
           <ItemsCategories key={statusId} id={statusId}>
-            <h3>{statusId}</h3>
-
-            {items
-              .filter((item) => itemLocations[item.id] === statusId)
-              .map((item) => (
-                <Items key={item.id} id={item.id}>
-                  {item.title}
+            {tasks
+              .filter((task) => task.status === statusId)
+              .map((task) => (
+                <Items key={task.id} id={task.id}>
+                  {task.details}
                 </Items>
               ))}
           </ItemsCategories>
         ))}
       </main>
+
+      <DragOverlay>
+        {activeId ? <div>abc</div> : null}
+      </DragOverlay>
     </DndContext>
   );
+
+  /* ---------------------- Handlers ---------------------- */
+
+  function handleDragStart(event: DragStartEvent) {
+    setActiveId(event.active.id);
+  }
 
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
     if (!over) return;
 
-    setItemLocations((prev) => ({
-      ...prev,
-      [active.id]: over.id,
-    }));
+    const newStatus = over.id as Status;
+
+    const existing = tasks.find((t) => t.id === active.id);
+    if (!existing) return;
+
+    updateTask({ ...existing, status: newStatus });
+
+    setActiveId(null);
   }
 
   function addTodo(event: React.FormEvent<HTMLFormElement>) {
@@ -67,26 +81,16 @@ function Body() {
     const form = event.currentTarget;
     const formData = new FormData(form);
 
-    const title = formData.get("title")?.toString().trim() || "";
-    const description = formData.get("description")?.toString().trim() || "";
-
-    if (!title) return; // basic guard
+    const details = formData.get("details")?.toString().trim() || "";
+    if (!details) return;
 
     const newTask: Task = {
-      id: String(Date.now()), // simple unique ID
-      title,
-      description,
-      status: Status[0],
+      id: crypto.randomUUID(),
+      details,
+      status: Status[0], // default "To Do"
     };
 
-    // Add task to items list
-    setItems((prev) => [...prev, newTask]);
-
-    // Register the task in DnD locations (initially not placed)
-    setItemLocations((prev) => ({
-      ...prev,
-      [newTask.id]: newTask.status,
-    }));
+    addTask(newTask);
 
     form.reset();
   }
