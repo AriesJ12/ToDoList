@@ -14,6 +14,8 @@ import { useState, useEffect } from "react";
 import { type Task, Status } from "../types";
 import { useTaskStore } from "../hooks/task";
 
+import '../index.css'
+
 function Body() {
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
 
