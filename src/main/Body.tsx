@@ -1,5 +1,3 @@
-import "./Body.css";
-
 import {
   DndContext,
   DragOverlay,
@@ -13,8 +11,6 @@ import Items from "../components/Items";
 import { useState, useEffect } from "react";
 import { type Task, Status } from "../types";
 import { useTaskStore } from "../hooks/task";
-
-import '../index.css'
 
 function Body() {
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
@@ -37,7 +33,7 @@ function Body() {
         <button type="submit">Add</button>
       </form>
 
-      <main>
+      <main className="grid grid-cols-3 gap-5 h-full">
         {Status.map((statusId) => (
           <ItemsCategories key={statusId} id={statusId}>
             {tasks

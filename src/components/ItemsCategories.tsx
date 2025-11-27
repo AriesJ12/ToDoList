@@ -25,9 +25,9 @@ function ItemsCategories(props: ItemsCategoriesProps) {
   });
 
   return (
-    <div className="category" ref={setNodeRef}>
-      <h3 style={getStatusStyle(props.id)}>{props.id}</h3>
-      <div className="draggableContainer" style={style}>
+    <div className="rounded-md bg-fourth" ref={setNodeRef}>
+      <h3 className="text-center font-semibold" style={getStatusStyle(props.id)}>{props.id}</h3>
+      <div className="flex flex-col justify-center items-center flex-wrap" style={style}>
         {props.children}
       </div>
     </div>
