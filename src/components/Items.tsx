@@ -1,7 +1,7 @@
 import { type ReactNode } from 'react'
 import {useDraggable} from '@dnd-kit/core';
 
-interface ItemsProps{
+export interface ItemsProps{
   children: ReactNode,
   id: string
 }
