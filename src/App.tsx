@@ -3,7 +3,7 @@ import "./App.css";
 function App() {
   return (
     <>
-      <button type="button" onClick={openMainWindow}>open window</button>
+      <button type="button" onClick={openMainWindow} className="">open window</button>
     </>
   );
 
