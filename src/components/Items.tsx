@@ -17,10 +17,8 @@ function Items(props: ItemsProps) {
 
 
   return (
-    <div ref={setNodeRef} style={style} {...listeners} {...attributes} className="basis-full">
-      <div className="bg-third width-full">
-        {props.children}
-      </div>
+    <div ref={setNodeRef} style={style} {...listeners} {...attributes} className="basis-full bg-third w-full rounded-md shadow-md p-5">
+      {props.children}
     </div>
   )
 }
