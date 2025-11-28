@@ -12,7 +12,7 @@ type Story = StoryObj<typeof Draggable>;
  
 export const Primary: Story = {
   args: {
-    children: <>123</>,
+    value: "123",
     id: '1',
   },
 }

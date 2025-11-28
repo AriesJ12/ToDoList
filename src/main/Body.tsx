@@ -11,6 +11,7 @@ import Items from "../components/Items";
 import { useState, useEffect } from "react";
 import { type Task, Status } from "../types";
 import { useTaskStore } from "../hooks/task";
+import ItemDesign from "../components/ItemDesign";
 
 function Body() {
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
@@ -39,16 +40,14 @@ function Body() {
             {tasks
               .filter((task) => task.status === statusId)
               .map((task) => (
-                <Items key={task.id} id={task.id}>
-                  {task.details}
-                </Items>
+                <Items key={task.id} id={task.id} value={task.details}/>
               ))}
           </ItemsCategories>
         ))}
       </main>
 
       <DragOverlay>
-        {activeId ? <div>abc</div> : null}
+        {activeId ? <ItemDesign>{`${getActiveTaskDetails(activeId)}`}</ItemDesign> : null}
       </DragOverlay>
     </DndContext>
   );
@@ -91,6 +90,10 @@ function Body() {
     addTask(newTask);
 
     form.reset();
+  }
+
+  function getActiveTaskDetails(activeId: UniqueIdentifier){
+     return tasks.find((task) => task.id === activeId)?.details
   }
 }
 

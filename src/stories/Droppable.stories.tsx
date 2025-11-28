@@ -15,11 +15,10 @@ type Story = StoryObj<typeof Droppable>;
 export const Primary: Story = {
   args: {
     children: <>
-    <Items id="123">
-      123
+    <Items id="123" value='123'>
+
     </Items>
-    <Items id="124">
-      123
+    <Items id="124" value='123'>
     </Items>
     </> ,
     id: "To Do",

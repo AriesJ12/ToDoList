@@ -25,8 +25,8 @@ function ItemsCategories(props: ItemsCategoriesProps) {
   });
 
   return (
-    <div className="rounded-md bg-fourth overflow-hidden" ref={setNodeRef}>
-      <h3 className="text-center font-bold py-4 text-lg" style={getStatusStyle(props.id)}>{props.id}</h3>
+    <div className="rounded-md bg-fourth" ref={setNodeRef}>
+      <h3 className="text-center font-bold py-4 text-lg rounded-t-md " style={getStatusStyle(props.id)}>{props.id}</h3>
       <div className="flex flex-col justify-center items-stretch flex-wrap gap-3 p-5" style={style}>
         {props.children}
       </div>
