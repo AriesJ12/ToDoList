@@ -12,7 +12,7 @@ function ItemsCategories(props: ItemsCategoriesProps) {
     id: props.id,
   });
   const style = {
-    color: isOver ? "green" : undefined,
+    backgroundColor: isOver ? "green" : undefined,
   };
   const statusColors: Record<(typeof Status)[number], string> = {
     "To Do": "#e9edc9",
