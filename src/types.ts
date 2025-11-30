@@ -1,7 +1,7 @@
 const Status = ["To Do", "In Progress", "Done"] as const;
 export type Status = (typeof Status)[number];
 
-export const Trash = "trash";
+export const Trash = ["trash1" , "trash2"]
 export type Trash = typeof Trash; 
 
 export type DropId = Status | Trash;

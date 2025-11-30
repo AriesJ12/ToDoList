@@ -26,7 +26,7 @@ function TransferCategory({
     <div
       ref={setNodeRef}
       style={style}
-      className={getClassName(mode)}
+      className={`${getClassName(mode)} ${className ?? ""}`}
       {...props}
     >
       {children}

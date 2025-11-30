@@ -12,6 +12,7 @@ import { useState, useEffect } from "react";
 import { type DropId, type Task, Status, Trash } from "../types";
 import { useTaskStore } from "../hooks/task";
 import ItemDesign from "../components/ItemDesign";
+import TransferCategory from "../components/TransferCategory";
 
 function Body() {
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
@@ -35,6 +36,10 @@ function Body() {
         <button type="submit">Add</button>
       </form>
 
+      <TransferCategory mode="left" id={Trash[0] }>
+        Trash 1
+      </TransferCategory>
+
       <main className="grid grid-cols-3 gap-5 h-full">
         {Status.map((statusId) => (
           <ItemsCategories key={statusId} id={statusId}>
@@ -46,6 +51,10 @@ function Body() {
           </ItemsCategories>
         ))}
       </main>
+
+      <TransferCategory mode="left" id={Trash[1] }>
+        Trash 2
+      </TransferCategory>
 
       <DragOverlay>
         {activeId ? (
@@ -75,8 +84,10 @@ function Body() {
       setActiveId(null);
       return;
     }
+    
+    const validId = dropId as Status
 
-    updateTask({ ...existing, status: dropId });
+    updateTask({ ...existing, status: validId });
 
     setActiveId(null);
   }
