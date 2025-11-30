@@ -9,7 +9,7 @@ import {
 import ItemsCategories from "../components/ItemsCategories";
 import Items from "../components/Items";
 import { useState, useEffect } from "react";
-import { type Task, Status } from "../types";
+import { type DropId, type Task, Status, Trash } from "../types";
 import { useTaskStore } from "../hooks/task";
 import ItemDesign from "../components/ItemDesign";
 
@@ -21,6 +21,7 @@ function Body() {
   const addTask = useTaskStore((s) => s.add);
   const updateTask = useTaskStore((s) => s.update);
   const loadTask = useTaskStore((s) => s.load);
+  const removeTask = useTaskStore((s) => s.remove);
 
   // Load tasks on initial mount
   useEffect(() => {
@@ -40,14 +41,16 @@ function Body() {
             {tasks
               .filter((task) => task.status === statusId)
               .map((task) => (
-                <Items key={task.id} id={task.id} value={task.details}/>
+                <Items key={task.id} id={task.id} value={task.details} />
               ))}
           </ItemsCategories>
         ))}
       </main>
 
       <DragOverlay>
-        {activeId ? <ItemDesign>{`${getActiveTaskDetails(activeId)}`}</ItemDesign> : null}
+        {activeId ? (
+          <ItemDesign>{`${getActiveTaskDetails(activeId)}`}</ItemDesign>
+        ) : null}
       </DragOverlay>
     </DndContext>
   );
@@ -62,12 +65,18 @@ function Body() {
     const { active, over } = event;
     if (!over) return;
 
-    const newStatus = over.id as Status;
+    const dropId = over.id as DropId;
 
     const existing = tasks.find((t) => t.id === active.id);
     if (!existing) return;
 
-    updateTask({ ...existing, status: newStatus });
+    if (dropId === Trash) {
+      removeTask(existing.id);
+      setActiveId(null);
+      return;
+    }
+
+    updateTask({ ...existing, status: dropId });
 
     setActiveId(null);
   }
@@ -92,8 +101,8 @@ function Body() {
     form.reset();
   }
 
-  function getActiveTaskDetails(activeId: UniqueIdentifier){
-     return tasks.find((task) => task.id === activeId)?.details
+  function getActiveTaskDetails(activeId: UniqueIdentifier) {
+    return tasks.find((task) => task.id === activeId)?.details;
   }
 }
 
