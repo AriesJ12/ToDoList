@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import TransferCategory from "../components/TransferCategory";
-import TrashIcon from "../assets/trash.svg?react"
+import TrashIcon from "../components/TrashIcon"
 
 const TransferDroppable = {
   component: TransferCategory,
@@ -14,7 +14,7 @@ type Story = StoryObj<typeof TransferDroppable>;
  
 export const Primary: Story = {
   args: {
-    children: <TrashIcon />,
+    children: <TrashIcon/>,
     id: "trash1",
     mode: "left",
     type: "danger"
