@@ -14,6 +14,8 @@ import { useTaskStore } from "../hooks/task";
 import ItemDesign from "../components/ItemDesign";
 import TransferCategory from "../components/TransferCategory";
 
+import trash from "../assets/trash.svg"
+
 function Body() {
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
 
@@ -36,8 +38,8 @@ function Body() {
         <button type="submit">Add</button>
       </form>
 
-      <TransferCategory mode="left" id={Trash[0] }>
-        Trash 1
+      <TransferCategory mode="left" id={Trash[0] } type="danger">
+        {trash}
       </TransferCategory>
 
       <main className="grid grid-cols-3 gap-5 h-full">
@@ -52,7 +54,7 @@ function Body() {
         ))}
       </main>
 
-      <TransferCategory mode="left" id={Trash[1] }>
+      <TransferCategory mode="left" id={Trash[1] } type="danger">
         Trash 2
       </TransferCategory>
 
