@@ -1,47 +1,54 @@
 import { useDroppable } from "@dnd-kit/core";
-import { type HTMLAttributes, type ReactNode } from "react";
+import { useEffect, useState, type HTMLAttributes, type ReactNode } from "react";
 
 interface TransferCategoryProps extends HTMLAttributes<HTMLDivElement> {
   id: string;
   mode: "left" | "right";
   children: ReactNode;
+  type: "danger" | "safe"
 }
 
 function TransferCategory({
   id,
   mode,
   children,
+  type,
   className,
   ...props
 }: TransferCategoryProps) {
   const { isOver, setNodeRef } = useDroppable({
     id: id,
   });
-
-  const style = {
-    color: isOver ? "green" : undefined,
-  };
+  
+  const droppingClass =
+  type === "danger"
+    ? isOver
+      ? "bg-danger"
+      : "bg-danger-secondary"
+    : type === "safe"
+    ? isOver
+      ? "bg-safe"
+      : "bg-safe-secondary"
+    : "";
 
   return (
     <div
       ref={setNodeRef}
-      style={style}
-      className={`${getClassName(mode)} ${className ?? ""}`}
+      className={`${getClassName()} ${className ?? ""} ${droppingClass} `}
       {...props}
     >
       {children}
     </div>
   );
 
-  function getClassName(mode: "left" | "right") {
-    let className = "";
+  function getClassName() {
+    let className = "h-full px-2 flex justify-center items-center";
 
     if (mode === "left") {
-      className = "absolute left-0 rounded-r-lg";
+      className += " absolute left-0 rounded-r-4xl";
     } else if (mode === "right") {
-      className = "absolute right-0 rounded-l-lg";
+      className += " absolute right-0 rounded-l-4xl";
     }
-
     return className;
   }
 }

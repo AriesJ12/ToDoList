@@ -11,4 +11,9 @@
   --color-fontColor: black;
 
   --font-display: "Inter", sans-serif; 
+
+  --color-danger: #cc3300;
+  --color-danger-secondary: #ff9966;
+  --color-safe: #339900;
+  --color-safe-secondary: #99cc33;
 }
