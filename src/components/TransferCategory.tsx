@@ -1,5 +1,5 @@
 import { useDroppable } from "@dnd-kit/core";
-import { useEffect, useState, type HTMLAttributes, type ReactNode } from "react";
+import { type HTMLAttributes, type ReactNode } from "react";
 
 interface TransferCategoryProps extends HTMLAttributes<HTMLDivElement> {
   id: string;

@@ -14,7 +14,7 @@ import { useTaskStore } from "../hooks/task";
 import ItemDesign from "../components/ItemDesign";
 import TransferCategory from "../components/TransferCategory";
 
-import trash from "../assets/trash.svg"
+import TrashIcon from "../components/TrashIcon";
 
 function Body() {
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
@@ -33,36 +33,36 @@ function Body() {
 
   return (
     <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-      <form onSubmit={addTodo}>
-        <input name="details" placeholder="Details" />
-        <button type="submit">Add</button>
-      </form>
+      <div className="relative h-full">
+        <TransferCategory mode="left" id={Trash[0]} type="danger">
+          <TrashIcon />
+        </TransferCategory>
+        <TransferCategory mode="right" id={Trash[1]} type="danger">
+          <TrashIcon />
+        </TransferCategory>
+        <form onSubmit={addTodo}>
+          <input name="details" placeholder="Details" />
+          <button type="submit">Add</button>
+        </form>
 
-      <TransferCategory mode="left" id={Trash[0] } type="danger">
-        {trash}
-      </TransferCategory>
+        <main className="grid grid-cols-3 gap-5 h-full">
+          {Status.map((statusId) => (
+            <ItemsCategories key={statusId} id={statusId}>
+              {tasks
+                .filter((task) => task.status === statusId)
+                .map((task) => (
+                  <Items key={task.id} id={task.id} value={task.details} />
+                ))}
+            </ItemsCategories>
+          ))}
+        </main>
 
-      <main className="grid grid-cols-3 gap-5 h-full">
-        {Status.map((statusId) => (
-          <ItemsCategories key={statusId} id={statusId}>
-            {tasks
-              .filter((task) => task.status === statusId)
-              .map((task) => (
-                <Items key={task.id} id={task.id} value={task.details} />
-              ))}
-          </ItemsCategories>
-        ))}
-      </main>
-
-      <TransferCategory mode="left" id={Trash[1] } type="danger">
-        Trash 2
-      </TransferCategory>
-
-      <DragOverlay>
-        {activeId ? (
-          <ItemDesign>{`${getActiveTaskDetails(activeId)}`}</ItemDesign>
-        ) : null}
-      </DragOverlay>
+        <DragOverlay>
+          {activeId ? (
+            <ItemDesign>{`${getActiveTaskDetails(activeId)}`}</ItemDesign>
+          ) : null}
+        </DragOverlay>
+      </div>
     </DndContext>
   );
 
@@ -86,8 +86,8 @@ function Body() {
       setActiveId(null);
       return;
     }
-    
-    const validId = dropId as Status
+
+    const validId = dropId as Status;
 
     updateTask({ ...existing, status: validId });
 
