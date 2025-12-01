@@ -33,19 +33,19 @@ function Body() {
 
   return (
     <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-      <div className="relative h-full">
-        <TransferCategory mode="left" id={Trash[0]} type="danger">
-          <TrashIcon />
-        </TransferCategory>
-        <TransferCategory mode="right" id={Trash[1]} type="danger">
-          <TrashIcon />
-        </TransferCategory>
+      <div className="flex flex-col h-screen">
         <form onSubmit={addTodo}>
           <input name="details" placeholder="Details" />
           <button type="submit">Add</button>
         </form>
 
-        <main className="grid grid-cols-3 gap-5 h-full">
+        <main className="grid grid-cols-3 gap-5 flex-1 relative py-7 px-15">
+          <TransferCategory mode="left" id={Trash[0]} type="danger">
+            <TrashIcon />
+          </TransferCategory>
+          <TransferCategory mode="right" id={Trash[1]} type="danger">
+            <TrashIcon />
+          </TransferCategory>
           {Status.map((statusId) => (
             <ItemsCategories key={statusId} id={statusId}>
               {tasks
