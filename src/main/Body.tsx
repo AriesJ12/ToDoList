@@ -1,30 +1,27 @@
 import {
   DndContext,
   DragOverlay,
-  type DragEndEvent,
-  type DragStartEvent,
-  type UniqueIdentifier,
 } from "@dnd-kit/core";
 
 import ItemsCategories from "../components/ItemsCategories";
 import Items from "../components/Items";
-import { useState, useEffect } from "react";
-import { type DropId, type Task, Status, Trash } from "../types";
+import { useEffect } from "react";
+import { type Task, Status, Trash } from "../types";
 import { useTaskStore } from "../hooks/task";
 import ItemDesign from "../components/ItemDesign";
 import TransferCategory from "../components/TransferCategory";
 
 import TrashIcon from "../components/TrashIcon";
+import { useTaskDrag } from "../hooks/taskDrag";
 
 function Body() {
-  const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
-
   // Zustand store
   const tasks = useTaskStore((s) => s.tasks);
   const addTask = useTaskStore((s) => s.add);
-  const updateTask = useTaskStore((s) => s.update);
   const loadTask = useTaskStore((s) => s.load);
-  const removeTask = useTaskStore((s) => s.remove);
+
+  const { activeId, handleDragStart, handleDragEnd, getActiveTaskDetails } =
+    useTaskDrag();
 
   // Load tasks on initial mount
   useEffect(() => {
@@ -66,34 +63,6 @@ function Body() {
     </DndContext>
   );
 
-  /* ---------------------- Handlers ---------------------- */
-
-  function handleDragStart(event: DragStartEvent) {
-    setActiveId(event.active.id);
-  }
-
-  function handleDragEnd(event: DragEndEvent) {
-    const { active, over } = event;
-    if (!over) return;
-
-    const dropId = over.id as DropId;
-
-    const existing = tasks.find((t) => t.id === active.id);
-    if (!existing) return;
-
-    if (Trash.includes(dropId)) {
-      removeTask(existing.id);
-      setActiveId(null);
-      return;
-    }
-
-    const validId = dropId as Status;
-
-    updateTask({ ...existing, status: validId });
-
-    setActiveId(null);
-  }
-
   function addTodo(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
@@ -112,10 +81,6 @@ function Body() {
     addTask(newTask);
 
     form.reset();
-  }
-
-  function getActiveTaskDetails(activeId: UniqueIdentifier) {
-    return tasks.find((task) => task.id === activeId)?.details;
   }
 }
 

@@ -1,4 +1,4 @@
-import { DndContext } from "@dnd-kit/core";
+import { DndContext, DragOverlay } from "@dnd-kit/core";
 import "./App.css";
 import { useEffect, useState } from "react";
 import { useTaskStore } from "./hooks/task";
@@ -7,20 +7,20 @@ import { DropId, Status, Trash } from "./types";
 import Items from "./components/Items";
 import TransferCategory from "./components/TransferCategory";
 import TrashIcon from "./components/TrashIcon";
+import ItemDesign from "./components/ItemDesign";
+import { useTaskDrag } from "./hooks/taskDrag";
 
 function App() {
   const tasks = useTaskStore((s) => s.tasks);
-  // const updateTask = useTaskStore((s) => s.update);
   const loadTask = useTaskStore((s) => s.load);
-  // const removeTask = useTaskStore((s) => s.remove);
+
   const [middleIndex, setMiddleIndex] = useState(Math.floor(DropId.length / 2));
   const leftTransferCategory: DropId = DropId[middleIndex - 1];
   const rightTransferCategory: DropId = DropId[middleIndex + 1];
-  // const [shownItemCategory, setShownItemCategory] = useState<Status>(
-  //   Status[middleIndex]
-  // );
+  const shownItemCategory = DropId[middleIndex] as Status;
 
-  const status = Status[1];
+  const { activeId, handleDragStart, handleDragEnd, getActiveTaskDetails } =
+    useTaskDrag();
 
   useEffect(() => {
     loadTask();
@@ -31,7 +31,11 @@ function App() {
       <button type="button" onClick={openMainWindow} className="">
         open window
       </button>
-      <button type="button" onClick={() => changeCategory("left")} className="border">
+      <button
+        type="button"
+        onClick={() => changeCategory("left")}
+        className="border"
+      >
         go left
       </button>
       <button
@@ -41,9 +45,9 @@ function App() {
       >
         go right
       </button>
-      <DndContext>
+      <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
         <TransferCategory
-          id={`${leftTransferCategory} leftTransfer`}
+          id={`${leftTransferCategory}`}
           key={`${leftTransferCategory} leftTransfer`}
           mode="left"
           type={Trash.includes(leftTransferCategory) ? "danger" : "safe"}
@@ -55,7 +59,7 @@ function App() {
           )}
         </TransferCategory>
         <TransferCategory
-          id={`${rightTransferCategory} rightTransfer`}
+          id={`${rightTransferCategory}`}
           key={`${rightTransferCategory} rightTransfer`}
           mode="right"
           type={Trash.includes(rightTransferCategory) ? "danger" : "safe"}
@@ -66,13 +70,19 @@ function App() {
             rightTransferCategory
           )}
         </TransferCategory>
-        <ItemsCategories id={status} key={status}>
+        <ItemsCategories id={shownItemCategory} key={shownItemCategory}>
           {tasks
-            .filter((task) => task.status === status)
+            .filter((task) => task.status === shownItemCategory)
             .map((task) => (
               <Items key={task.id} id={task.id} value={task.details} />
             ))}
         </ItemsCategories>
+
+        <DragOverlay>
+          {activeId ? (
+            <ItemDesign>{`${getActiveTaskDetails(activeId)}`}</ItemDesign>
+          ) : null}
+        </DragOverlay>
       </DndContext>
     </main>
   );
