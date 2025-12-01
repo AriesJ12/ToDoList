@@ -81,7 +81,7 @@ function Body() {
     const existing = tasks.find((t) => t.id === active.id);
     if (!existing) return;
 
-    if (dropId === Trash) {
+    if (Trash.includes(dropId)) {
       removeTask(existing.id);
       setActiveId(null);
       return;
