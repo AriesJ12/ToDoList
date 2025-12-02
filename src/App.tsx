@@ -9,6 +9,7 @@ import TransferCategory from "./components/TransferCategory";
 import TrashIcon from "./components/TrashIcon";
 import ItemDesign from "./components/ItemDesign";
 import { useTaskDrag } from "./hooks/taskDrag";
+import HeaderPopUp from "./components/HeaderPopUp";
 
 function App() {
   const tasks = useTaskStore((s) => s.tasks);
@@ -28,23 +29,10 @@ function App() {
 
   return (
     <main className="h-[400px] w-[400px] relative">
-      <button type="button" onClick={openMainWindow} className="">
-        open window
-      </button>
-      <button
-        type="button"
-        onClick={() => changeCategory("left")}
-        className="border"
-      >
-        go left
-      </button>
-      <button
-        type="button"
-        onClick={() => changeCategory("right")}
-        className="border"
-      >
-        go right
-      </button>
+      <HeaderPopUp
+        openMainWindow={openMainWindow}
+        changeCategory={changeCategory}
+      ></HeaderPopUp>
       <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
         <TransferCategory
           id={`${leftTransferCategory}`}
