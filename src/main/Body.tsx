@@ -31,10 +31,10 @@ function Body() {
 
   return (
     <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-      <div className="flex flex-col h-screen">
+      <div className="flex flex-col h-full">
         <Header onSubmit={addTodo}></Header>
 
-        <main className="grid grid-cols-3 gap-5 flex-1 relative py-7 px-15">
+        <main className="grid grid-cols-3 gap-5 flex-1 relative py-3 px-15">
           <TransferCategory mode="left" id={Trash[0]} type="danger">
             <TrashIcon />
           </TransferCategory>

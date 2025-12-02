@@ -11,9 +11,7 @@ function ItemsCategories(props: ItemsCategoriesProps) {
   const { isOver, setNodeRef } = useDroppable({
     id: props.id,
   });
-  const style = {
-    backgroundColor: isOver ? "green" : undefined,
-  };
+  
   const statusColors: Record<(typeof Status)[number], string> = {
     "To Do": "#e9edc9",
     "In Progress": "#ccd5ae",
@@ -24,10 +22,15 @@ function ItemsCategories(props: ItemsCategoriesProps) {
     backgroundColor: statusColors[status],
   });
 
+  const beingDropped = {
+    backgroundColor: isOver ? statusColors[props.id] : undefined,
+    filter: isOver ? "grayscale(25%)": undefined,
+  };
+
   return (
-    <div className="rounded-md bg-fourth animate-drop-to-view" ref={setNodeRef}>
-      <h3 className="text-center font-bold py-4 text-lg rounded-t-md " style={getStatusStyle(props.id)}>{props.id}</h3>
-      <div className="flex flex-col justify-center items-stretch flex-wrap gap-3 p-5" style={style}>
+    <div className="rounded-md bg-fourth animate-drop-to-view h-100 flex flex-col" ref={setNodeRef}>
+      <h3 className="text-center font-bold py-4 text-lg rounded-t-md" style={getStatusStyle(props.id)}>{props.id}</h3>
+      <div className="p-5 overflow-auto flex-1" style={beingDropped}>
         {props.children}
       </div>
     </div>

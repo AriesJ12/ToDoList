@@ -16,7 +16,30 @@ export const Primary: Story = {
   args: {
     children: <>
     <Items id="123" value='123'>
-
+    </Items>
+    <Items id="124" value='123'>
+    </Items>
+    <Items id="124" value='123'>
+    </Items>
+    <Items id="124" value='123'>
+    </Items>
+    <Items id="124" value='123'>
+    </Items>
+    <Items id="124" value='123'>
+    </Items>
+    <Items id="124" value='123'>
+    </Items>
+    <Items id="124" value='123'>
+    </Items>
+    <Items id="124" value='123'>
+    </Items>
+    <Items id="124" value='123'>
+    </Items>
+    <Items id="124" value='123'>
+    </Items>
+    <Items id="124" value='123'>
+    </Items>
+    <Items id="124" value='123'>
     </Items>
     <Items id="124" value='123'>
     </Items>
