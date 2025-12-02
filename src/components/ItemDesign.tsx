@@ -7,7 +7,7 @@ interface ItemDesignProps extends HTMLAttributes<HTMLDivElement> {
 
 function ItemDesign({ ref, children, ...props }: ItemDesignProps) {
   return (
-    <div ref={ref} {...props} className="basis-full bg-third w-full rounded-md shadow-md p-5">
+    <div ref={ref} {...props} className="basis-full bg-third w-full rounded-md shadow-md p-5 animate-slide-to-view">
       {children}
     </div>
   );

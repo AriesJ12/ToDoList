@@ -34,7 +34,7 @@ function TransferCategory({
   return (
     <div
       ref={setNodeRef}
-      className={`${getClassName()} ${className ?? ""} ${droppingClass} `}
+      className={`${getClassName()} ${className ?? ""} ${droppingClass} animate-slide-to-view`}
       {...props}
     >
       {children}
