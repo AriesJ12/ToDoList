@@ -46,7 +46,7 @@ function Body() {
               {tasks
                 .filter((task) => task.status === statusId)
                 .map((task) => (
-                  <Items key={task.id} id={task.id} value={task.details} />
+                  <Items key={task.id} id={task.id} value={task.details} className={activeId == task.id ? "opacity-50" : ""} />
                 ))}
             </ItemsCategories>
           ))}
@@ -54,7 +54,9 @@ function Body() {
 
         <DragOverlay>
           {activeId ? (
-            <ItemDesign>{`${getActiveTaskDetails(activeId)}`}</ItemDesign>
+            <ItemDesign style={{
+              border: "2px solid #d4a373"
+            }}>{`${getActiveTaskDetails(activeId)}`}</ItemDesign>
           ) : null}
         </DragOverlay>
       </div>

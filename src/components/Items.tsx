@@ -1,10 +1,10 @@
 import {useDraggable} from '@dnd-kit/core';
 import ItemDesign from './ItemDesign';
 
-
 export interface ItemsProps{
   value: string;
-  id: string
+  id: string;
+  className?: string;
 }
 
 function Items(props: ItemsProps) {
@@ -18,6 +18,7 @@ function Items(props: ItemsProps) {
       ref={setNodeRef}
       {...attributes}
       {...listeners}
+      className={props.className}
     >
       {props.value}
     </ItemDesign>
