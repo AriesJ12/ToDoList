@@ -36,13 +36,14 @@ function TransferCategory({
       ref={setNodeRef}
       className={`${getClassName()} ${className ?? ""} ${droppingClass} animate-slide-to-view`}
       {...props}
+      style={{zIndex: 999, ...props.style}}
     >
       {children}
     </div>
   );
 
   function getClassName() {
-    let className = "h-full px-2 flex justify-center items-center";
+    let className = "h-full p-2 flex justify-center items-center";
 
     if (mode === "left") {
       className += " absolute left-0 rounded-r-4xl";

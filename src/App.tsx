@@ -9,7 +9,6 @@ import TransferCategory from "./components/TransferCategory";
 import TrashIcon from "./components/TrashIcon";
 import ItemDesign from "./components/ItemDesign";
 import { useTaskDrag } from "./hooks/taskDrag";
-import HeaderPopUp from "./components/HeaderPopUp";
 
 function App() {
   const tasks = useTaskStore((s) => s.tasks);
@@ -28,17 +27,22 @@ function App() {
   }, [loadTask]);
 
   return (
-    <main className="h-[400px] w-[400px] relative">
-      <HeaderPopUp
-        openMainWindow={openMainWindow}
-        changeCategory={changeCategory}
-      ></HeaderPopUp>
+    <main className="relative h-[550px] w-[500px] bg-third px-10 flex flex-col justify-center">
       <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
         <TransferCategory
           id={`${leftTransferCategory}`}
           key={`${leftTransferCategory} leftTransfer`}
           mode="left"
           type={Trash.includes(leftTransferCategory) ? "danger" : "safe"}
+          onClick={() => {
+            changeCategory("left");
+          }}
+          className={
+            Trash.includes(leftTransferCategory)
+              ? undefined
+              : "hover:cursor-pointer"
+          }
+          style={{ writingMode: "sideways-lr" }}
         >
           {Trash.includes(leftTransferCategory) ? (
             <TrashIcon />
@@ -51,6 +55,15 @@ function App() {
           key={`${rightTransferCategory} rightTransfer`}
           mode="right"
           type={Trash.includes(rightTransferCategory) ? "danger" : "safe"}
+          onClick={() => {
+            changeCategory("right");
+          }}
+          className={
+            Trash.includes(rightTransferCategory)
+              ? undefined
+              : "hover:cursor-pointer"
+          }
+          style={{ writingMode: "vertical-rl" }}
         >
           {Trash.includes(rightTransferCategory) ? (
             <TrashIcon />
@@ -58,7 +71,7 @@ function App() {
             rightTransferCategory
           )}
         </TransferCategory>
-        <ItemsCategories id={shownItemCategory} key={shownItemCategory}>
+        <ItemsCategories id={shownItemCategory} key={shownItemCategory} headerOnClick={openMainWindow}>
           {tasks
             .filter((task) => task.status === shownItemCategory)
             .map((task) => (
